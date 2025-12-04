@@ -6,6 +6,7 @@
   import AppFooter from './AppFooter.svelte';
   import AppHeader from './AppHeader.svelte';
   import AppSidebar from './AppSidebar.svelte';
+  import TabBar from './TabBar.svelte';
   import { layoutStore } from '$lib/stores/layout.svelte.js';
   import { uiSettingsStore } from '$lib/stores/ui-settings.svelte.js';
   import { cn } from '$lib/utils/cn';
@@ -45,6 +46,9 @@
     >
       <!-- 头部 -->
       <AppHeader />
+
+      <!-- 标签栏 -->
+      <TabBar />
 
       <!-- 页面内容 -->
       <main class="flex-1 min-h-0 overflow-auto px-4 py-5 lg:px-6 lg:py-6">
