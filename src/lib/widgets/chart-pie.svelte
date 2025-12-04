@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Chart, Pie, Legend, Tooltip } from 'layerchart';
   import type { WidgetProps, PieChartDataPoint } from './types';
 
   interface Props extends WidgetProps {
@@ -25,34 +24,37 @@
 </script>
 
 <div class="h-full flex flex-col gap-4">
-  <div style="height: {chartHeight}px;" class="w-full">
-    <Chart
-      data={chartData}
-      value="value"
-      category="name"
-      padding={{ left: 10, right: 10, top: 10, bottom: 10 }}
-    >
-      <Pie />
-      <Legend />
-      <Tooltip let:data>
-        <div class="space-y-1 p-2">
-          <div class="text-xs font-medium">{data?.name || ''}</div>
-          <div class="text-xs text-muted-foreground">
-            {(data?.value || 0).toLocaleString()} ({(((data?.value || 0) / total) * 100).toFixed(1)}%)
-          </div>
-        </div>
-      </Tooltip>
-    </Chart>
+  <div style="height: {chartHeight}px;" class="w-full flex items-center justify-center">
+    <!-- Simple pie visualization using CSS -->
+    <div class="relative w-full h-full max-w-[200px] max-h-[200px]">
+      <svg viewBox="0 0 100 100" class="w-full h-full -rotate-90">
+        {#each chartData as item, index (item.name)}
+          {@const prevSum = chartData
+            .slice(0, index)
+            .reduce((sum, i) => sum + (i.value / total) * 360, 0)}
+          {@const angle = (item.value / total) * 360}
+          {@const largeArc = angle > 180 ? 1 : 0}
+          {@const startRad = (prevSum * Math.PI) / 180}
+          {@const endRad = ((prevSum + angle) * Math.PI) / 180}
+          {@const x1 = 50 + 40 * Math.cos(startRad)}
+          {@const y1 = 50 + 40 * Math.sin(startRad)}
+          {@const x2 = 50 + 40 * Math.cos(endRad)}
+          {@const y2 = 50 + 40 * Math.sin(endRad)}
+          <path
+            d="M 50 50 L {x1} {y1} A 40 40 0 {largeArc} 1 {x2} {y2} Z"
+            fill={item.color}
+            class="transition-opacity hover:opacity-80"
+          />
+        {/each}
+      </svg>
+    </div>
   </div>
 
   <!-- Legend -->
   <div class="flex flex-wrap justify-center gap-3">
-    {#each chartData as item}
+    {#each chartData as item (item.name)}
       <div class="flex items-center gap-2">
-        <span
-          class="h-2.5 w-2.5 rounded-full"
-          style="background-color: {item.color}"
-        ></span>
+        <span class="h-2.5 w-2.5 rounded-full" style="background-color: {item.color}"></span>
         <span class="text-xs text-muted-foreground">{item.name}</span>
       </div>
     {/each}

@@ -10,7 +10,11 @@
     SheetTitle,
     SheetTrigger,
   } from '$lib/components/ui/sheet';
-  import { dashboardStore, widgetTemplates, type WidgetType } from '$lib/stores/dashboard-store.svelte';
+  import {
+    dashboardStore,
+    widgetTemplates,
+    type WidgetType,
+  } from '$lib/stores/dashboard-store.svelte';
   import ChartLine from '$lib/widgets/chart-line.svelte';
   import ChartBar from '$lib/widgets/chart-bar.svelte';
   import ChartPie from '$lib/widgets/chart-pie.svelte';
@@ -38,7 +42,7 @@
   };
 
   // Widget content renderer
-  function WidgetContent(type: WidgetType, isMobile: boolean) {
+  function WidgetContent(type: WidgetType, _isMobile: boolean) {
     switch (type) {
       case 'chart-line':
         return ChartLine;
@@ -97,7 +101,7 @@
               <SheetDescription>选择要添加到仪表盘的部件</SheetDescription>
             </SheetHeader>
             <div class="grid gap-3 mt-4">
-              {#each widgetTemplates as template}
+              {#each widgetTemplates as template (template.type)}
                 {@const Icon = iconMap[template.icon] || BarChart3}
                 <Button
                   variant="outline"
@@ -118,11 +122,7 @@
             </div>
           </SheetContent>
         </Sheet>
-        <Button
-          variant="outline"
-          size="sm"
-          onclick={() => dashboardStore.resetToDefault()}
-        >
+        <Button variant="outline" size="sm" onclick={() => dashboardStore.resetToDefault()}>
           <RotateCcw class="h-4 w-4 mr-1" />
           重置
         </Button>
@@ -131,11 +131,7 @@
           保存
         </Button>
       {:else}
-        <Button
-          variant="outline"
-          size="sm"
-          onclick={() => dashboardStore.setIsEditing(true)}
-        >
+        <Button variant="outline" size="sm" onclick={() => dashboardStore.setIsEditing(true)}>
           <Settings class="h-4 w-4 mr-1" />
           自定义
         </Button>

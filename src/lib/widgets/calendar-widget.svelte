@@ -71,9 +71,7 @@
     {:else}
       <ul class="space-y-2">
         {#each displayList as event (event.id)}
-          <li
-            class="flex items-start justify-between gap-2 rounded-md bg-background p-2 shadow-xs"
-          >
+          <li class="flex items-start justify-between gap-2 rounded-md bg-background p-2 shadow-xs">
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium leading-tight truncate">
                 {event.title || '未命名事件'}

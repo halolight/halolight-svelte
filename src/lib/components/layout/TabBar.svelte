@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ChevronLeft, ChevronRight, Home, Loader2, X } from 'lucide-svelte';
+  import { ChevronLeft, ChevronRight, Home, X } from 'lucide-svelte';
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { Button } from '$lib/components/ui/button';
@@ -49,7 +49,7 @@
   }
 
   // Handle tab click
-  function handleTabClick(tab: typeof tabs[0]) {
+  function handleTabClick(tab: (typeof tabs)[0]) {
     navigationStore.setActiveTab(tab.id);
     if (pathname !== tab.path) {
       goto(tab.path);
@@ -57,7 +57,7 @@
   }
 
   // Handle tab close
-  function handleCloseTab(event: MouseEvent, tab: typeof tabs[0]) {
+  function handleCloseTab(event: MouseEvent, tab: (typeof tabs)[0]) {
     event.stopPropagation();
     if (!tab.closable) return;
 
@@ -89,7 +89,7 @@
 
       return () => {
         observer.disconnect();
-        tabsContainerRef.removeEventListener('scroll', checkScroll);
+        tabsContainerRef?.removeEventListener('scroll', checkScroll);
       };
     }
   });
@@ -125,7 +125,10 @@
     {/if}
 
     <!-- Tabs container -->
-    <div bind:this={tabsContainerRef} class="flex-1 flex items-center overflow-x-auto scrollbar-hide">
+    <div
+      bind:this={tabsContainerRef}
+      class="flex-1 flex items-center overflow-x-auto scrollbar-hide"
+    >
       {#each tabs as tab (tab.id)}
         <TabContextMenu {tab}>
           <button

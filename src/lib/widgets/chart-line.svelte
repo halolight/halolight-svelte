@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Chart, Axis, Grid, Area, Legend, Tooltip } from 'layerchart';
+  import { Chart, Axis, Grid, Area, Legend } from 'layerchart';
   import type { WidgetProps, ChartDataPoint } from './types';
 
   interface Props extends WidgetProps {
@@ -23,22 +23,11 @@
 </script>
 
 <div style="height: {chartHeight}px;" class="w-full">
-  <Chart
-    data={chartData}
-    x="x"
-    y="y"
-    padding={{ left: 40, bottom: 32, right: 10, top: 10 }}
-  >
+  <Chart data={chartData} x="x" y="y" padding={{ left: 40, bottom: 32, right: 10, top: 10 }}>
     <Grid />
     <Axis placement="left" grid />
     <Axis placement="bottom" />
     <Area opacity={0.2} class="fill-primary" />
     <Legend />
-    <Tooltip let:data>
-      <div class="flex items-center justify-between gap-2 p-2">
-        <span class="text-xs font-medium">访问量:</span>
-        <span class="text-xs ml-2">{data?.y || 0}</span>
-      </div>
-    </Tooltip>
   </Chart>
 </div>
