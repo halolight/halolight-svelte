@@ -32,7 +32,7 @@
 
   let isLoading = $state(false);
   const profileData = $derived({
-    name: user?.nickname || '管理员',
+    name: user?.name || '管理员',
     email: user?.email || 'admin@halolight.h7ml.cn',
     phone: '138-8888-8888',
     address: '北京市朝阳区',

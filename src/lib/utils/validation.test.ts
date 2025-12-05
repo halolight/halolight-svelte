@@ -149,7 +149,7 @@ describe('validateLoginForm', () => {
 describe('validateRegisterForm', () => {
   it('验证有效注册表单', () => {
     const result = validateRegisterForm({
-      username: 'testuser',
+      name: '测试用户',
       email: 'test@example.com',
       password: 'Password123',
       confirmPassword: 'Password123',
@@ -159,7 +159,7 @@ describe('validateRegisterForm', () => {
 
   it('密码不一致验证失败', () => {
     const result = validateRegisterForm({
-      username: 'testuser',
+      name: '测试用户',
       email: 'test@example.com',
       password: 'Password123',
       confirmPassword: 'Password456',
@@ -170,7 +170,7 @@ describe('validateRegisterForm', () => {
 
   it('邮箱格式无效验证失败', () => {
     const result = validateRegisterForm({
-      username: 'testuser',
+      name: '测试用户',
       email: 'invalid',
       password: 'Password123',
       confirmPassword: 'Password123',

@@ -53,13 +53,13 @@
   >
     <div class="flex items-center space-x-2">
       <Avatar class="h-6 w-6">
-        <AvatarImage src={user?.avatar} alt={user?.nickname} />
+        <AvatarImage src={user?.avatar} alt={user?.name} />
         <AvatarFallback class="text-xs">
-          {user?.nickname?.charAt(0) || 'U'}
+          {user?.name?.charAt(0) || 'U'}
         </AvatarFallback>
       </Avatar>
       <span class="hidden lg:block text-sm font-medium">
-        {user?.nickname || '用户'}
+        {user?.name || '用户'}
       </span>
       <ChevronDown class="h-4 w-4 opacity-50" />
     </div>
@@ -68,7 +68,7 @@
     <DropdownMenuLabel>
       <div class="flex flex-col space-y-1">
         <p class="text-sm font-medium leading-none">
-          {user?.nickname || '用户'}
+          {user?.name || '用户'}
         </p>
         <p class="text-xs leading-none text-muted-foreground">
           {user?.email}

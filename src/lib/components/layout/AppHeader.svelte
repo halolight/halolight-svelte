@@ -73,9 +73,7 @@
 
   // 获取用户首字母
   const userInitials = $derived(
-    authStore.user?.nickname?.slice(0, 2) ||
-      authStore.user?.username?.slice(0, 2).toUpperCase() ||
-      'AD'
+    authStore.user?.name?.slice(0, 2) || authStore.user?.email?.slice(0, 2).toUpperCase() || 'AD'
   );
 </script>
 
@@ -186,7 +184,7 @@
       <DropdownMenuContent align="end" class="w-56">
         <DropdownMenuLabel class="font-normal">
           <div class="flex flex-col space-y-1">
-            <p class="text-sm font-medium">{authStore.user?.nickname || '管理员'}</p>
+            <p class="text-sm font-medium">{authStore.user?.name || '管理员'}</p>
             <p class="text-xs text-muted-foreground">
               {authStore.user?.email || 'admin@halolight.h7ml.cn'}
             </p>

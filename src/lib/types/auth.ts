@@ -2,16 +2,14 @@ import type { BaseEntity } from './index.js';
 
 // 用户基础信息
 export interface User extends BaseEntity {
-  username: string;
+  name: string;
   email: string;
   phone?: string;
   avatar?: string;
-  nickname: string;
-  status: 'active' | 'inactive' | 'banned';
+  status: 'active' | 'inactive' | 'suspended';
   department?: string;
   position?: string;
   lastLoginAt?: string;
-  lastLoginIp?: string;
 }
 
 // 角色信息
@@ -40,34 +38,33 @@ export interface Permission extends BaseEntity {
 
 // 登录请求
 export interface LoginDto {
-  username: string;
+  email: string;
   password: string;
-  rememberMe?: boolean;
-  captcha?: string;
-  captchaId?: string;
+  remember?: boolean;
 }
+
+// 登录请求别名（统一命名）
+export type LoginRequest = LoginDto;
 
 // 注册请求
 export interface RegisterDto {
-  username: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
-  nickname?: string;
-  phone?: string;
-  captcha?: string;
-  captchaId?: string;
-  agree?: boolean;
 }
+
+// 注册请求别名（统一命名）
+export type RegisterRequest = RegisterDto;
 
 // 登录响应
 export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
   user: User;
-  permissions: string[];
-  roles: Role[];
+  token: string;
+  expiresIn: number;
+  refreshToken?: string;
+  permissions?: string[];
+  roles?: Role[];
 }
 
 // 刷新令牌请求
@@ -98,7 +95,7 @@ export interface ChangePasswordDto {
 
 // 更新用户信息
 export interface UpdateUserDto {
-  nickname?: string;
+  name?: string;
   phone?: string;
   avatar?: string;
   department?: string;
@@ -107,11 +104,10 @@ export interface UpdateUserDto {
 
 // 创建用户请求
 export interface CreateUserDto {
-  username: string;
+  name: string;
   email: string;
   password: string;
   phone?: string;
-  nickname: string;
   roleIds: string[];
   department?: string;
   position?: string;

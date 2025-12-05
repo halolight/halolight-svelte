@@ -19,8 +19,8 @@
   const accounts = $derived([
     {
       id: '1',
-      name: user?.nickname || '管理员',
-      email: user?.email || 'admin@example.com',
+      name: user?.name || '管理员',
+      email: user?.email || 'admin@halolight.h7ml.cn',
       role: { name: 'admin', label: '超级管理员', permissions: ['*'] },
       lastLoginAt: new Date().toISOString(),
       isActive: true,

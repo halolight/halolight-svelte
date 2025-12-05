@@ -11,19 +11,22 @@ export const authHandlers = [
   http.post(`${API_BASE}/auth/login`, async ({ request }) => {
     await delay(500);
     const body = (await request.json()) as LoginDto;
-    const { username, password } = body;
+    const { email, password } = body;
 
     // 模拟登录失败
-    if (username === 'wrong' || password === 'wrong') {
+    if (email === 'wrong@example.com' || password === 'wrong') {
       return HttpResponse.json(
         {
           code: 401,
-          message: '用户名或密码错误',
+          message: '邮箱或密码错误',
           data: null,
         },
         { status: 401 }
       );
     }
+
+    // 从邮箱提取用户名用于生成头像
+    const nameFromEmail = email.split('@')[0];
 
     // 模拟登录成功
     return HttpResponse.json({
@@ -32,14 +35,14 @@ export const authHandlers = [
       data: {
         user: {
           id: 'user-1',
-          username,
-          email: `${username}@example.com`,
-          avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`,
-          nickname: username,
+          name: '管理员',
+          email,
+          avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${nameFromEmail}`,
+          status: 'active',
           roleIds: ['role-1'],
           roleName: '管理员',
         },
-        accessToken: `mock-access-token-${Date.now()}`,
+        token: `mock-access-token-${Date.now()}`,
         refreshToken: `mock-refresh-token-${Date.now()}`,
         expiresIn: 3600,
       },
@@ -50,19 +53,22 @@ export const authHandlers = [
   http.post(`${API_BASE}/auth/register`, async ({ request }) => {
     await delay(500);
     const body = (await request.json()) as RegisterDto;
-    const { username, email } = body;
+    const { name, email } = body;
 
-    // 模拟用户名已存在
-    if (username === 'admin' || username === 'test') {
+    // 模拟邮箱已存在
+    if (email === 'admin@example.com' || email === 'test@example.com') {
       return HttpResponse.json(
         {
           code: 409,
-          message: '用户名已存在',
+          message: '邮箱已被注册',
           data: null,
         },
         { status: 409 }
       );
     }
+
+    // 从邮箱提取用于生成头像
+    const nameFromEmail = email.split('@')[0];
 
     // 模拟注册成功
     return HttpResponse.json({
@@ -71,14 +77,14 @@ export const authHandlers = [
       data: {
         user: {
           id: `user-${Date.now()}`,
-          username,
+          name,
           email,
-          avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`,
-          nickname: username,
+          avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${nameFromEmail}`,
+          status: 'active',
           roleIds: ['role-2'],
           roleName: '普通用户',
         },
-        accessToken: `mock-access-token-${Date.now()}`,
+        token: `mock-access-token-${Date.now()}`,
         refreshToken: `mock-refresh-token-${Date.now()}`,
         expiresIn: 3600,
       },
@@ -146,10 +152,10 @@ export const authHandlers = [
       message: 'success',
       data: {
         id: 'user-1',
-        username: 'admin',
-        email: 'admin@example.com',
+        name: '管理员',
+        email: 'admin@halolight.h7ml.cn',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=admin',
-        nickname: '管理员',
+        status: 'active',
         roleIds: ['role-1'],
         roleName: '管理员',
       },
@@ -244,8 +250,9 @@ export const authHandlers = [
       message: '更新成功',
       data: {
         id: 'user-1',
-        username: 'admin',
-        email: 'admin@example.com',
+        name: '管理员',
+        email: 'admin@halolight.h7ml.cn',
+        status: 'active',
         ...(body || {}),
       },
     });

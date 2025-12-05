@@ -19,7 +19,7 @@
   // 账户设置
   let profile = $state({
     nickname: '管理员',
-    email: 'admin@example.com',
+    email: 'admin@halolight.h7ml.cn',
     phone: '138****8888',
     bio: '这是一段个人简介',
   });

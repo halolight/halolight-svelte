@@ -128,7 +128,7 @@ class AuthStore {
   /**
    * 登录
    */
-  async login(username: string, password: string, _rememberMe: boolean = false): Promise<boolean> {
+  async login(email: string, password: string, _rememberMe: boolean = false): Promise<boolean> {
     this.isLoading = true;
 
     try {
@@ -137,14 +137,13 @@ class AuthStore {
 
       // 模拟登录响应
       const mockResponse: LoginResponse = {
-        accessToken: `mock-access-token-${Date.now()}`,
+        token: `mock-access-token-${Date.now()}`,
         refreshToken: `mock-refresh-token-${Date.now()}`,
         expiresIn: 900, // 15分钟
         user: {
           id: '1',
-          username,
-          email: `${username}@example.com`,
-          nickname: '管理员',
+          name: '管理员',
+          email,
           status: 'active',
           avatar: '/avatars/default.png',
           createdAt: new Date().toISOString(),
@@ -167,11 +166,11 @@ class AuthStore {
       };
 
       // 更新状态
-      this.token = mockResponse.accessToken;
-      this.refreshToken = mockResponse.refreshToken;
+      this.token = mockResponse.token;
+      this.refreshToken = mockResponse.refreshToken ?? null;
       this.user = mockResponse.user;
-      this.permissions = mockResponse.permissions;
-      this.roles = mockResponse.roles;
+      this.permissions = mockResponse.permissions ?? [];
+      this.roles = mockResponse.roles ?? [];
 
       // 保存到本地存储
       this.saveToStorage();
@@ -222,10 +221,10 @@ class AuthStore {
    * 注册
    */
   async register(data: {
-    username: string;
+    name: string;
     email: string;
     password: string;
-    nickname: string;
+    confirmPassword: string;
   }): Promise<boolean> {
     this.isLoading = true;
 

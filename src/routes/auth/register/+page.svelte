@@ -14,19 +14,17 @@
   import { validateRegisterForm } from '$lib/utils/validation.js';
   import { Eye, EyeOff, Mail, User, Lock } from 'lucide-svelte';
 
-  let username = $state('');
+  let name = $state('');
   let email = $state('');
   let password = $state('');
   let confirmPassword = $state('');
-  let nickname = $state('');
   let showPassword = $state(false);
   let showConfirmPassword = $state(false);
   let errors = $state({
-    username: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    nickname: '',
   });
   let message = $state('');
   let messageType = $state<'success' | 'error' | ''>('');
@@ -39,16 +37,21 @@
     message = '';
     messageType = '';
     errors = {
-      username: '',
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
-      nickname: '',
     };
+
+    // 检查姓名
+    if (!name.trim()) {
+      errors.name = '姓名不能为空';
+      return;
+    }
 
     // 表单验证
     const validation = validateRegisterForm({
-      username,
+      name,
       email,
       password,
       confirmPassword,
@@ -56,33 +59,22 @@
 
     if (!validation.valid) {
       validation.errors.forEach((error) => {
-        if (error.includes('用户名')) errors.username = error;
+        if (error.includes('姓名')) errors.name = error;
         if (error.includes('邮箱')) errors.email = error;
         if (error.includes('密码')) errors.password = error;
         if (error.includes('两次输入的密码')) errors.confirmPassword = error;
       });
 
-      // 检查昵称
-      if (!nickname.trim()) {
-        errors.nickname = '昵称不能为空';
-      }
-
-      return;
-    }
-
-    // 检查昵称
-    if (!nickname.trim()) {
-      errors.nickname = '昵称不能为空';
       return;
     }
 
     try {
       // 调用注册
       await authStore.register({
-        username,
+        name,
         email,
         password,
-        nickname,
+        confirmPassword,
       });
 
       message = '注册成功！正在跳转到登录页面...';
@@ -156,50 +148,29 @@
             </div>
           {/if}
 
-          <!-- 用户名输入 -->
+          <!-- 姓名输入 -->
           <div class="space-y-2">
             <label
-              for="username"
+              for="name"
               class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              用户名
+              姓名
             </label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <User class="h-4 w-4 text-gray-400" />
               </div>
               <Input
-                id="username"
+                id="name"
                 type="text"
-                placeholder="请输入用户名"
-                bind:value={username}
-                class={errors.username ? 'border-red-500 pl-10' : 'pl-10'}
+                placeholder="请输入姓名"
+                bind:value={name}
+                class={errors.name ? 'border-red-500 pl-10' : 'pl-10'}
                 required
               />
             </div>
-            {#if errors.username}
-              <p class="text-sm text-red-600 dark:text-red-400">{errors.username}</p>
-            {/if}
-          </div>
-
-          <!-- 昵称输入 -->
-          <div class="space-y-2">
-            <label
-              for="nickname"
-              class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              昵称
-            </label>
-            <Input
-              id="nickname"
-              type="text"
-              placeholder="请输入昵称"
-              bind:value={nickname}
-              class={errors.nickname ? 'border-red-500' : ''}
-              required
-            />
-            {#if errors.nickname}
-              <p class="text-sm text-red-600 dark:text-red-400">{errors.nickname}</p>
+            {#if errors.name}
+              <p class="text-sm text-red-600 dark:text-red-400">{errors.name}</p>
             {/if}
           </div>
 

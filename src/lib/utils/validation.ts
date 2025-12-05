@@ -349,17 +349,17 @@ export function validateLoginForm(data: { username: string; password: string }):
  * 验证注册表单
  */
 export function validateRegisterForm(data: {
-  username: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
 }): ValidationResult {
   const errors: string[] = [];
 
-  if (!data.username?.trim()) {
-    errors.push('用户名不能为空');
-  } else if (!REGEX.USERNAME.test(data.username)) {
-    errors.push('用户名只能包含字母、数字、下划线和连字符，长度3-20位');
+  if (!data.name?.trim()) {
+    errors.push('姓名不能为空');
+  } else if (data.name.trim().length < 2) {
+    errors.push('姓名长度不能少于2个字符');
   }
 
   if (!data.email?.trim()) {
