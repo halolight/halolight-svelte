@@ -1,0 +1,382 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* View Transitions API - 主题切换动画 */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2147483647;
+}
+
+/* 切换到浅色模式时，旧视图在上层 */
+html.transitioning-to-light::view-transition-old(root) {
+  z-index: 2147483647;
+}
+
+html.transitioning-to-light::view-transition-new(root) {
+  z-index: 1;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--border));
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* 拖拽样式 */
+.drag-ghost {
+  opacity: 0.5;
+}
+
+.drag-chosen {
+  opacity: 0.75;
+}
+
+.drag-dragging {
+  cursor: grabbing;
+}
+
+/* 动画效果 */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+/* 打印样式 */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  :root {
+    --radius: 0.25rem;
+  }
+}
+
+/* 减少动画模式支持 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 主题皮肤变量 - Blue */
+[data-skin='blue'] {
+  --primary: 221.2 83.2% 53.3%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 213 94% 68%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 221.2 83.2% 53.3%;
+}
+
+.dark[data-skin='blue'] {
+  --primary: 213 94% 68%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --accent: 221.2 83.2% 53.3%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 213 94% 68%;
+}
+
+/* 主题皮肤变量 - Emerald */
+[data-skin='emerald'] {
+  --primary: 160 84% 39%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 172 66% 50%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 160 84% 39%;
+}
+
+.dark[data-skin='emerald'] {
+  --primary: 172 66% 50%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --accent: 160 84% 39%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 172 66% 50%;
+}
+
+/* 主题皮肤变量 - Amber */
+[data-skin='amber'] {
+  --primary: 38 92% 50%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --accent: 25 95% 53%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 38 92% 50%;
+}
+
+.dark[data-skin='amber'] {
+  --primary: 45 93% 47%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --accent: 25 95% 53%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 45 93% 47%;
+}
+
+/* 主题皮肤变量 - Violet */
+[data-skin='violet'] {
+  --primary: 263 70% 50%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 270 67% 58%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 263 70% 50%;
+}
+
+.dark[data-skin='violet'] {
+  --primary: 270 67% 58%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --accent: 263 70% 50%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 270 67% 58%;
+}
+
+/* 主题皮肤变量 - Rose */
+[data-skin='rose'] {
+  --primary: 347 77% 50%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 350 89% 60%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 347 77% 50%;
+}
+
+.dark[data-skin='rose'] {
+  --primary: 350 89% 60%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --accent: 347 77% 50%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 350 89% 60%;
+}
+
+/* 主题皮肤变量 - Teal */
+[data-skin='teal'] {
+  --primary: 174 84% 32%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 187 85% 53%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 174 84% 32%;
+}
+
+.dark[data-skin='teal'] {
+  --primary: 172 66% 50%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --accent: 174 84% 32%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 172 66% 50%;
+}
+
+/* 主题皮肤变量 - Slate */
+[data-skin='slate'] {
+  --primary: 215 19% 35%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 213 94% 68%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 215 19% 35%;
+}
+
+.dark[data-skin='slate'] {
+  --primary: 213 94% 68%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --accent: 215 19% 35%;
+  --accent-foreground: 210 40% 98%;
+  --ring: 213 94% 68%;
+}
+
+/* 主题皮肤变量 - Ocean */
+[data-skin='ocean'] {
+  --primary: 200 98% 39%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 199 89% 48%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 200 98% 39%;
+}
+
+.dark[data-skin='ocean'] {
+  --primary: 199 89% 48%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --accent: 200 98% 39%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 199 89% 48%;
+}
+
+/* 主题皮肤变量 - Sunset */
+[data-skin='sunset'] {
+  --primary: 24 95% 50%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 349 89% 60%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 24 95% 50%;
+}
+
+.dark[data-skin='sunset'] {
+  --primary: 24 100% 60%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --accent: 349 89% 60%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 24 100% 60%;
+}
+
+/* 主题皮肤变量 - Aurora */
+[data-skin='aurora'] {
+  --primary: 142 76% 36%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 292 84% 61%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 142 76% 36%;
+}
+
+.dark[data-skin='aurora'] {
+  --primary: 142 69% 58%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --accent: 292 84% 61%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --ring: 142 69% 58%;
+}
